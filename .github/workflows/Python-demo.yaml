@@ -1,0 +1,46 @@
+name: Python-demo
+
+on:
+    push: 
+    workflow_dispatch:
+
+jobs:
+  python-logic-job: # Unique ID for the job
+    runs-on: ubuntu-latest # The type of machine the job will run on
+
+    steps:
+      - name: Checkout Code # Step to pull your repository code onto the runner
+        uses: actions/checkout@v4 # Uses the official GitHub action to clone the repo
+
+      - name: Set up Python # Best practice: ensure a specific Python version is used
+        uses: actions/setup-python@v5 # Official action to install Python
+        with:
+          python-version: '3.10' # Specify the version to ensure consistency
+
+      - name: Run Inline Python Script # The step where we execute the logic
+        shell: python # Tells GitHub to use the Python interpreter for the 'run' block
+        env: # Mapping GitHub data to Environment Variables for the script to use
+          USER_NAME: ${{ github.actor }} # Getting the person who triggered the run
+          REPO_NAME: ${{ github.repository }} # Getting the full repo name (org/repo)
+          MY_SECRET_TOKEN: ${{ secrets.EXAMPLE_SECRET }} # Accessing a stored secret safely
+        run: | # The pipe symbol allows for a multi-line script
+          import os # Standard library to interact with the Operating System
+          
+          # 1. Retrieve the environment variables we defined above
+          user = os.getenv('USER_NAME') # Reads the 'USER_NAME' env var
+          repo = os.getenv('REPO_NAME') # Reads the 'REPO_NAME' env var
+          token = os.getenv('MY_SECRET_TOKEN') # Reads the secret
+          
+          # 2. Perform logic
+          print(f"--- Technical Onboarding Session ---") # Printing to the logs
+          print(f"Hello, {user}! You are working in {repo}.") # Using the variables
+          
+          # 3. Validation logic
+          if token: # Checking if the secret was actually provided
+              print("Status: Secret token was successfully loaded.")
+          else:
+              print("Status: No secret token found. Check your repository secrets.")
+          
+          # 4. Example of a calculation
+          result = 10 * 10 # Simple math logic
+          print(f"Calculated result for the pipeline: {result}")
