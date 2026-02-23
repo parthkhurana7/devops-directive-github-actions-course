@@ -28,11 +28,12 @@ jobs:
           import os
           print(f"Python version: {sys.version}")
           print(f"Workflow triggered by: {os.getenv('GITHUB_ACTOR')}")
-
-      # 3. Conditional Step (Only runs if a certain file exists)
-      - name: Run Node logic ONLY if package.json exists
-        if: hashFiles('package.json') != '' # This 'if' check prevents the error you saw
+          
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
+          # This points to the folder containing your package-lock.json
+          cache-dependency-path: './04-advanced-features/caching/minimal-node-project/package-lock.json'
+
