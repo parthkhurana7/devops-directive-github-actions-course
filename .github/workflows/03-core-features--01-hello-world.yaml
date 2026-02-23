@@ -8,8 +8,18 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - run: echo "Hello from an inline bash script in a GitHub Action Workflow!"
-  print_data:
+  print_github_object:
     runs-on: ubuntu-24.04
     steps:
       - run: echo "${{ toJSON(github) }}"
+    
+  print_env:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo "${{ toJSON(env) }}"
+
+  print_runner:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo "${{ toJSON(runner) }}"
 
