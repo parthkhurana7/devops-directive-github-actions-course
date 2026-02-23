@@ -17,7 +17,6 @@ jobs:
       run: echo "os is ${{ runner.os }}"
 
   python-logic-job: # Unique ID for the job
-    needs: Hello_World
     runs-on: ubuntu-latest # The type of machine the job will run on
     steps:
       - name: Checkout Code # Step to pull your repository code onto the runner
@@ -55,3 +54,35 @@ jobs:
           # 4. Example of a calculation
           result = 10 * 10 # Simple math logic
           print(f"Calculated result for the pipeline: {result}")
+
+  Try_Java:
+    needs: Hello_World
+    runs-on: windows-latest
+    env:
+        os: windows
+    
+    steps:
+      - name: step 1
+        run: echo "This is the step onee"
+        
+      - name: Checkout repository # Step 1: Get the source code
+        uses: actions/checkout@v4 # Clones the repo so the runner can access the files
+
+      - name: Set up JDK 17 # Step 2: Install the Java Development Kit
+        uses: actions/setup-java@v4 # Official action to manage Java versions
+        with:
+          java-version: '17' # Specifies the version (LTS version is best for enterprise)
+          distribution: 'temurin' # Selects the Adoptium Temurin distribution
+          cache: 'maven' # CRITICAL: Caches Maven dependencies to make future runs much faster
+
+      - name: Build with Maven # Step 3: Compile and Test
+        # 'mvn -B' runs in Batch mode (cleaner logs for CI)
+        # 'package' compiles code, runs tests, and creates a JAR file
+        run: mvn -B package --file pom.xml 
+
+      - name: Upload Build Artifact # Step 4: Save the result
+        uses: actions/upload-artifact@v4 # Saves the generated JAR file so it can be downloaded
+        with:
+          name: compiled-jar-file # Name of the download package
+          path: target/*.jar # Tells GitHub to grab the JAR file from the Maven 'target' folder
+          
