@@ -1,0 +1,24 @@
+name: MAC OS TESTING
+
+on: 
+    workflow_dispatch:
+
+jobs:
+    Hello_WORLD:
+        runs-on: macos-latest
+        env:
+            OS: mac
+        steps:
+            - name: Helooo
+              run: echo "Hello Bhaiyo"
+            
+            - name: Raam Raam
+              run: |
+                echo "MY OS Version is ${{env.OS}}"
+                echo "Real os is ${{runner.os}}"
+                echo "Temperature is ${{runner.temp}}"
+                echo "Temperature is ${{runner.temp}}"
+                echo "Temperature is ${{runner.temp}}"
+                echo "Temperature is ${{runner.temp}}"
+
+        
