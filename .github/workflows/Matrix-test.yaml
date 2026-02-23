@@ -5,17 +5,15 @@ on:
 
 jobs:
     Matrix:
-        runs-on: ubuntu-latest
+        runs-on: ${{matrix.os}}
         strategy:
             matrix:
-                number: [1, 2]
-                letter: [a, b, c]
+                os: [ubuntu-latest, macos-latest, windows-latest]
             fail-fast: true
         timeout-minutes: 5
 
         steps:
           - name: test
             run: |
-              echo "Running on ${{matrix.number}} - ${{matrix.letter}}"
+              echo "Running on ${{matrix.os}}"
 
-              

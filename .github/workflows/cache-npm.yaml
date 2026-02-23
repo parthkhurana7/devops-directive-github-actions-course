@@ -1,7 +1,6 @@
 name: Project Diagnostic Tool # A generic name for onboarding
 
 on: 
-  push:
   workflow_dispatch: # Allows you to manually click "Run" for testing
 
 jobs:
