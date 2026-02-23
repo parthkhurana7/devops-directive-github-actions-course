@@ -1,0 +1,21 @@
+name: Matrix test
+
+on:
+    workflow_dispatch:
+
+jobs:
+    Matrix:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                number: [1, 2]
+                letter: [a, b, c]
+            fail-fast: true
+        timeout-minutes: 5
+
+        steps:
+          - name: test
+            run: |
+              echo "Running on ${{matrix.number}} - ${{matrix.letter}}"
+
+              
