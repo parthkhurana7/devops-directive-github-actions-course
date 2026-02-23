@@ -1,13 +1,24 @@
 name: Python-demo
 
 on:
-    push: 
     workflow_dispatch:
 
 jobs:
-  python-logic-job: # Unique ID for the job
-    runs-on: ubuntu-latest # The type of machine the job will run on
+  Hello_World:
+    runs-on: macos-14
+    steps:
+    - name: checking out
+      uses: actions/checkout@v4
 
+    - name: Just a hello
+      run: echo "Hello"
+
+    - name: check system os
+      run: echo "os is ${{ runner.os }}"
+
+  python-logic-job: # Unique ID for the job
+    needs: Hello_World
+    runs-on: ubuntu-latest # The type of machine the job will run on
     steps:
       - name: Checkout Code # Step to pull your repository code onto the runner
         uses: actions/checkout@v4 # Uses the official GitHub action to clone the repo
