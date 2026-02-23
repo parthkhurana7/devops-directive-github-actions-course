@@ -2,6 +2,7 @@ name: Hello World
 
 on:
   workflow_dispatch:
+  push:
 
 jobs:
   say-hello-inline-bash:
@@ -11,7 +12,12 @@ jobs:
   print_github_object:
     runs-on: ubuntu-24.04
     steps:
-      - run: echo "${{ toJSON(github) }}"
+      - name: Print basic GitHub context info
+        run: |
+          echo "The person who triggered this is: ${{ github.actor }}"
+          echo "The repository name is: ${{ github.repository }}"
+          echo "The branch or tag name is: ${{ github.ref }}"
+          echo "The commit hash is: ${{ github.sha }}"
     
   print_env:
     runs-on: ubuntu-24.04
