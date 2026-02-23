@@ -1,33 +1,38 @@
-name: Node.js CI with Auto-Caching # Name of the workflow
+name: Project Diagnostic Tool # A generic name for onboarding
 
-on:
+on: 
   push:
-    branches: [ "main" ] # Runs on every push to the main branch
-  pull_request:
-    branches: [ "main" ] # Runs on every pull request to the main branch
+  workflow_dispatch: # Allows you to manually click "Run" for testing
 
 jobs:
-  build-and-test: # Job ID
-    runs-on: ubuntu-latest # The virtual environment (runner)
+  diagnostic-check:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code # Step 1: Clone the repository
-        uses: actions/checkout@v4 # Essential to get your code onto the runner
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js # Step 2: Install Node and configure caching
-        uses: actions/setup-node@v4 # The official GitHub Action for Node.js
+      # 1. Basic Bash Check (Works everywhere)
+      - name: System Information
+        run: |
+          echo "Current Runner OS: $RUNNER_OS"
+          echo "Current Directory: $(pwd)"
+          echo "Files in this repo:"
+          ls -R
+
+      # 2. Python Check (Safe because Python is pre-installed on Ubuntu runners)
+      - name: Python Environment Check
+        shell: python
+        run: |
+          import sys
+          import os
+          print(f"Python version: {sys.version}")
+          print(f"Workflow triggered by: {os.getenv('GITHUB_ACTOR')}")
+
+      # 3. Conditional Step (Only runs if a certain file exists)
+      - name: Run Node logic ONLY if package.json exists
+        if: hashFiles('package.json') != '' # This 'if' check prevents the error you saw
+        uses: actions/setup-node@v4
         with:
-          node-version: '20' # Specifies the Node.js version to use
-          cache: 'npm' # THE MAGIC LINE: Automatically handles caching of ~/.npm 
-                       # It looks for your package-lock.json to create the cache key.
-
-      - name: Install Dependencies # Step 3: Download packages
-        # 'npm ci' (Clean Install) is preferred for CI/CD over 'npm install'
-        # because it is faster and ensures a strictly consistent environment.
-        run: npm ci 
-
-      - name: Run Tests # Step 4: Execute the test suite
-        run: npm test # Runs the test script defined in your package.json
-
-      - name: Build Project # Step 5: Compile/Build the app
-        run: npm run build # Generates the production build
+          node-version: '20'
+          cache: 'npm'
