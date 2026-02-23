@@ -16,9 +16,9 @@ jobs:
               run: |
                 echo "MY OS Version is ${{env.OS}}"
                 echo "Real os is ${{runner.os}}"
+                echo "arch is ${{runner.arch}}"
+                echo "env is ${{runner.environment}}"
                 echo "Temperature is ${{runner.temp}}"
-                echo "Temperature is ${{runner.temp}}"
-                echo "Temperature is ${{runner.temp}}"
-                echo "Temperature is ${{runner.temp}}"
+
 
         
