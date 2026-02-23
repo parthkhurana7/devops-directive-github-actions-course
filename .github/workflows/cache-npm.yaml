@@ -1,0 +1,33 @@
+name: Node.js CI with Auto-Caching # Name of the workflow
+
+on:
+  push:
+    branches: [ "main" ] # Runs on every push to the main branch
+  pull_request:
+    branches: [ "main" ] # Runs on every pull request to the main branch
+
+jobs:
+  build-and-test: # Job ID
+    runs-on: ubuntu-latest # The virtual environment (runner)
+
+    steps:
+      - name: Checkout Code # Step 1: Clone the repository
+        uses: actions/checkout@v4 # Essential to get your code onto the runner
+
+      - name: Setup Node.js # Step 2: Install Node and configure caching
+        uses: actions/setup-node@v4 # The official GitHub Action for Node.js
+        with:
+          node-version: '20' # Specifies the Node.js version to use
+          cache: 'npm' # THE MAGIC LINE: Automatically handles caching of ~/.npm 
+                       # It looks for your package-lock.json to create the cache key.
+
+      - name: Install Dependencies # Step 3: Download packages
+        # 'npm ci' (Clean Install) is preferred for CI/CD over 'npm install'
+        # because it is faster and ensures a strictly consistent environment.
+        run: npm ci 
+
+      - name: Run Tests # Step 4: Execute the test suite
+        run: npm test # Runs the test script defined in your package.json
+
+      - name: Build Project # Step 5: Compile/Build the app
+        run: npm run build # Generates the production build

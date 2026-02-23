@@ -75,14 +75,3 @@ jobs:
           distribution: 'temurin' # Selects the Adoptium Temurin distribution
           cache: 'maven' # CRITICAL: Caches Maven dependencies to make future runs much faster
 
-      - name: Build with Maven # Step 3: Compile and Test
-        # 'mvn -B' runs in Batch mode (cleaner logs for CI)
-        # 'package' compiles code, runs tests, and creates a JAR file
-        run: mvn -B package --file pom.xml 
-
-      - name: Upload Build Artifact # Step 4: Save the result
-        uses: actions/upload-artifact@v4 # Saves the generated JAR file so it can be downloaded
-        with:
-          name: compiled-jar-file # Name of the download package
-          path: target/*.jar # Tells GitHub to grab the JAR file from the Maven 'target' folder
-          
