@@ -1,0 +1,28 @@
+name: Testing
+
+on:
+    push:      
+
+jobs: 
+    Testing:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os : [windows-latest, macos-latest, ubuntu-latest]
+                exclude:
+                    - os: macos-latest
+            max-parallel: 2
+
+        steps:
+          - name: Hello
+            run: echo "Hello to you"
+
+          - name: Second step
+            run: |
+              echo "I am ${{runner.os}}"
+
+          - name: Sleeping now ok
+            run: ls -ltrh
+        
+        
+        
