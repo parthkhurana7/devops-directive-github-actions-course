@@ -38,3 +38,31 @@ jobs:
               run: |
                 pip install bandit 
                 bandit -r . -f json -o bandit-result.json
+
+            - name: Upload artifact
+              if: always()
+              uses: actions/upload-artifact@v4
+              with:
+                name: my-artifact
+                path: bandit-result.json
+
+
+    Download_Artifact:
+        needs: Second_Job
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v6
+
+            - name: Downloading the artifact
+              uses: actions/download-artifact@v4
+              with:
+                name: my-artifact
+                path: bandit-result.json
+
+            - name: checking files
+              run: ls -ltrh
+
+            - name: see json
+              run: cat bandit-result.json
