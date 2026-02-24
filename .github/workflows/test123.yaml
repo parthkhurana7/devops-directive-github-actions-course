@@ -22,7 +22,7 @@ jobs:
               echo "I am ${{runner.os}}"
 
           - name: Sleeping now ok
-            run: ls -ltrh
+            run: sleep 5
         
         
         
