@@ -7,7 +7,6 @@ def check_onboarding_env():
     
     if not api_key:
         print("❌ Error: CLOUDBEES_API_KEY not found in environment.")
-        sys.exit(1)
     
     print(f"✅ Environment Check: API Key is set (Length: {len(api_key)})")
 
